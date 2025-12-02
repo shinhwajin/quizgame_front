@@ -1,0 +1,25 @@
+import { authApis } from './authApis';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+// ===================================== API 호출 함수 =====================================
+
+// 회원가입
+export const createUserApi = async (form) => {
+    const response = await axios.post(authApis.CREATE_USER_API.uri, form);
+    return response.data;
+};
+
+// 로그인
+export const loginApi = async (form) => {
+    const response = await axios.post(authApis.LOGIN_API.uri, form);
+    return response.data;
+};
+
+// 로그아웃
+export const logoutApi = async () => {
+    const response = await axios.post(authApis.LOGOUT_API.uri, {});
+    return response.data;
+};
+
+// ===================================== React Query 커스텀 훅 =====================================

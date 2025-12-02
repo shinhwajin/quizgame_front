@@ -1,0 +1,6 @@
+export const authApis = {
+        GET_AUTH_API: { uri: '/api/v1/user/check-auth', method: 'GET', description: '세션 인증 조회' },
+        CREATE_USER_API: { uri: '/api/v1/user/join', method: 'POST', description: '회원가입' },
+        LOGIN_API: { uri: '/api/v1/user/login', method: 'POST', description: '로그인' },
+        LOGOUT_API: { uri: '/api/v1/user/logout', method: 'POST', description: '로그아웃' },
+}

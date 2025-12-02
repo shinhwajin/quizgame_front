@@ -2,23 +2,43 @@
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
+import { EyeCloseIcon, EyeIcon } from "@/icons";
 import Link from "next/link";
 import React, { useState } from "react";
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from "next/navigation";
+
+import { loginApi } from '../../fetchers/auth/auth';
 
 export default function SignInForm() {
+  const router = useRouter();
+
   const [showPassword, setShowPassword] = useState(false);
+
+  const login = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const loginForm = { userName: formData.get("userName"), password: formData.get("password") };
+
+    loginMutation.mutate(loginForm);
+  };
+
+  const loginMutation = useMutation({
+    mutationFn: async (form) => {
+      return loginApi(form); // API 호출
+    },
+    onSuccess: () => {
+      router.push("/");
+    },
+    onError: (error) => {
+      const message = error?.response?.data?.message;
+      alert(message);
+    }
+  });
+
   return (
     <div className="flex flex-col flex-1 lg:w-1/2 w-full">
-      <div className="w-full max-w-md sm:pt-10 mx-10 mb-5">
-        <Link
-          href="/"
-          className="inline-flex items-center text-sm text-gray-600 transition-colors hover:text-gray-800 dark:text-gray-500 dark:hover:text-gray-400"
-        >
-          <ChevronLeftIcon />
-          메인으로
-        </Link>
-      </div>
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">
@@ -30,14 +50,14 @@ export default function SignInForm() {
             </p>
           </div>
           <div>
-            <form>
+            <form onSubmit={login}>
               <div className="space-y-6">
                 <div>
                   <Label>
                     ID / 닉네임 <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input 
-                    placeholder="아이디를 입력해주세요." 
+                  <Input
+                    placeholder="아이디를 입력해주세요."
                     id="userName"
                     name="userName"
                   />
